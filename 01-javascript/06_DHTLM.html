@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>06_DHTML</title>
+</head>
+
+<script type="application/javascript">
+
+function document_write(){
+    console.log("==============================")
+
+    console.log(document.write)
+
+    //document.write es una herramienta 'de trazo grueso' para alterar lo que se ve en el navegador...
+
+    //La primera llamada a document.write sustituye todo el árbol por el html que pasamos por parámetro
+    document.write("<h1>Nuevo contenido generado con document.write()</h1>")
+    //Las llamadas posteriores se limitan a añadir contenido
+    document.write("<button onclick='alert(\"HOLA\")'>DALE</button>")
+}
+
+function innerHTML(){
+
+    console.log("==============================")
+
+    //InnerHTML es una propiedad de los nodos
+    //Esta propiedad solo tiene uso en aquellos nodos que correspondan a etiquetas que
+    //pueden tener descendencia: <p>, <div>, <span>, <table>, <h1>, <tr>, <td>...
+    //Etiquetas que aun teniendo la propiedad innerHTML no tiene sentido el usarla:
+    //<br>, <hr>, ...
+
+    //En innerHTML encontramos un texto con el html contenido en la etiqueta
+    let div = document.getElementById("botones")
+    console.log(div.innerHTML)
+
+    //En cualquier momento podemos cambiar el valor de innerHTML
+    let div1 = document.getElementById("div1")
+    div1.innerHTML = "HOLA QUE TAL"
+
+    //Esto machaca el valor anterior
+    div1.innerHTML = "<h2>Contenido generado dinámicamente con innerHTML</h2>"
+
+    //Si queremos ir añadiendo cosas debemos concatenar
+    div1.innerHTML = div1.innerHTML+"<h2>Esto es como todo. Si lo usas bien es seguro. Si lo usas mal...</h2>"
+
+}
+
+function vaciarInnerHTML(){
+    //let nodo = document.getElementById("div1")
+    //nodo.innerHTML = ""
+
+    //document.getElementById("div1").innerHTML = null
+    document.getElementById("div1").innerHTML = ""
+}
+
+function obtenerListadoPeliculas(){
+    //Esta función simula una llamada al servidor para obtener los datos
+    //de las películas
+
+    //Supongamos que hemos enviado una petición a un servicio remoto que nos ha entregado
+    //esta información:
+    let peliculas = [
+        { 
+          titulo   : 'Alien',
+          director : 'Ridley Scott',
+          genero   : 'Ci-Fi' 
+        },
+        { 
+          titulo   : 'Cazafantasmas',
+          director : 'Ivan Reitman',
+          genero   : 'Estupenda' 
+        },
+        { 
+          titulo   : 'Marea roja',
+          director : 'Tony Scott',
+          genero   : 'Submarinos' 
+        },
+        { 
+          titulo   : 'Don erre que erre',
+          director : 'Jose Luis Saez de Heredia',
+          genero   : "Comedia"
+        }
+    ]
+    return peliculas
+
+}
+
+function crearNodos(){
+
+    console.log("==============================")
+
+    //Funciones del objeto document para crear nodos
+    //document.createElement()   //Para crear nodos del tipo etiqueta
+    //document.createAttribute() //Para crear un nodo del tipo atributo
+    //document.createTextNode()  //Para crear un nodo de tipo texto
+
+    let tabla = document.createElement("table")
+    //Manera antígua de crear atributos
+    let atrBorder = document.createAttribute("border") //creamos el atributo
+    atrBorder.value = "1" //le damos valor
+    tabla.setAttributeNode(atrBorder) //se lo asignamos a la etiqueta 
+    //Manera actual:
+    tabla.setAttribute("align", "center") //Mucho mejor :)
+    tabla.setAttribute("id", "tablaPeliculas") 
+
+    let trCabecera = document.createElement("tr")
+    let th1 = document.createElement("th")
+    let th2 = document.createElement("th")
+    let th3 = document.createElement("th")
+    let txt1 = document.createTextNode("Título")
+    let txt2 = document.createTextNode("Director")
+    let txt3 = document.createTextNode("Género")
+
+    //Funciones para añadir hijos a los nodos
+    //AppendChild añade los hijos de uno en uno (y al final)
+    th1.appendChild(txt1) 
+    th2.appendChild(txt2)
+    th3.appendChild(txt3)
+    //la función 'append' permite añadir los nodos a granel
+    trCabecera.append(th1, th2, th3) //Los nodos pueden ser de cualquier tipo
+
+    tabla.append(trCabecera)
+
+    let arrayPeliculas = obtenerListadoPeliculas()
+    for(let pelicula of arrayPeliculas){
+        let tr = document.createElement("tr")
+        let td1 = document.createElement("td")
+        let td2 = document.createElement("td")
+        let td3 = document.createElement("td")
+        let txt1 = document.createTextNode(pelicula.titulo)
+        let txt2 = document.createTextNode(pelicula.director)
+        let txt3 = document.createTextNode(pelicula.genero)
+        //Da igual el orden en el que construyamos el árbol
+        tr.append(td1, td2, td3)
+        td1.append(txt1)
+        td2.append(txt2)
+        td3.append(txt3)
+
+        tabla.append(tr)
+    }
+
+    //Añadimos la tabla al div2
+    //let div2 = document.getElementById("div2")
+    //div2.append(tabla)
+    document.getElementById("div2").append(tabla)
+}
+
+function crearNodos2(){
+    let html = 
+        `<table align='center' border='1'>
+            <tr>
+                <th>Título</th>
+                <th>Director</th>
+                <th>Género</th>
+            </tr>`
+    let arrayPeliculas = obtenerListadoPeliculas()
+    for(let pelicula of arrayPeliculas){
+        //html = html +
+        html += 
+            `<tr>
+                <td>${pelicula.titulo}</td>
+                <td>${pelicula.director}</td>
+                <td>${pelicula.genero}</td>
+            </tr>`
+    }
+    html += "</table>"
+
+    document.getElementById("div3").innerHTML = html
+}
+
+
+
+//En esta función vamos a asignar manejadores de eventos a los 
+//botones que los necesiten
+function inicializar(){
+    //let btnDocumentWrite = document.getElementById("btn_documentWrite")
+    //btnDocumentWrite.onclick = document_write //Percatense de que no tiene los paréntesis
+
+    //Lo mismo en una única línea
+    document.getElementById("btn_documentWrite").onclick = document_write
+    document.getElementById("btn_innerHTML").onclick = innerHTML
+    document.getElementById("btn_vaciarInnerHTML").onclick = vaciarInnerHTML
+    document.getElementById("btn_crearNodos").onclick = crearNodos
+    document.getElementById("btn_crearNodos2").onclick = crearNodos2
+    document.getElementById("btn_vaciarSelect").onclick = vaciarSelect
+}
+
+
+function vaciarSelect(){
+
+    //A día de hoy esta es la manera más corta (pero no la mejor) de vaciar un desplegable:
+    //Vaciando el innerHTML no podemos ser selectivos
+    //ciudades.innerHTML = ''
+
+    //Eliminando nodos del árbol DOM
+
+    //Podemos solicitarle a un nodo su array de hijos y eliminar 'a mano'
+    //el nodo correspondiente. 
+    //Problemas:
+    //-los nodos de texto que se añaden al sangrar el código
+    //-hay que asegurarse de que no nos cargamos nada al tocar A MANO el array
+
+    //A cualquier nodo podemos solicitarle que elimine a un hijo
+    //let padre = document.getElementById("idDelPadre")
+    //let hijo  = document.getElementById("idDelHijo")
+    //padre.removeChild(hijo)
+    //
+    //let botones = document.getElementById("botones")
+    //let btnInnerHTML = document.getElementById("btn_innerHTML")
+    //botones.removeChild(btnInnerHTML)
+
+    //Todos los nodos tienen una referencia a su padre asi que podemos
+    //simplificar lo anterior asi:
+    //let hijo  = document.getElementById("idDelHijo")
+    //hijo.parentNode.removeChild(hijo)
+    //
+    //let btnInnerHTML = document.getElementById("btn_innerHTML")
+    //let padre = btnInnerHTML.parentNode
+    //padre.removeChild(btnInnerHTML)    
+    //Las dos líneas anteriores en una sola:
+    //btnInnerHTML.parentNode.removeChild(btnInnerHTML)
+
+    //La manera más sencilla es pedirselo directamente al nodo que queremos
+    //eliminar:
+    //let nodo  = document.getElementById("nodoABorrar")
+    //nodo.remove()
+    //
+    //let btnInnerHTML = document.getElementById("btn_innerHTML")
+    //btnInnerHTML.remove()
+
+    let ciudades = document.getElementById("ciudades")
+    let hijos = ciudades.childNodes
+
+    for(let a=0; a<hijos.length; a++){
+        hijos[a].remove()
+    }
+    return
+
+    let numeroNodos = hijos.length
+    for(let a=0; a<numeroNodos; a++){
+        hijos[0].remove()
+    }
+
+}
+
+///////////////////
+// Objeto WINDOW //
+///////////////////
+
+console.log(window)
+
+//window es el objeto implícito que representa a la pestaña del navegador
+//Tiene un cerro de propiedades. 
+//En algunas se guardan valores
+//-location: la url que está escrita en la barra de navegacion
+//-posicion x e y del navegor
+//-tamaño de la pestaña y del navegador
+//-...
+//En otras se guardan funciones, pensadas para ejecutarse cuando se
+//disparan los eventos
+//-onclose: se va a cerrar el navegador/pestaña (no siempre funciona)
+//-onload : ha terminado la inicialización de la página
+//-...
+
+//for(let propiedad in window){
+//    console.log(propiedad+":"+window[propiedad])
+//}
+
+//Esto está perfectamente bien
+//window.onload = function(){
+//    console.log("Hola Radiola")
+//}
+
+window.onload = inicializar
+
+
+</script>
+
+<body>
+
+    <marquee>
+        <h1>
+            <font color="lightGreen">
+                DHTML
+            </font>
+        </h1>
+    </marquee>
+
+    <hr/>
+
+    <h1>HOLA</h1>
+
+
+    <div id="botones" align="center">
+        <input type="button" id="btn_documentWrite"   value="Document.write"/>
+        <input type="button" id="btn_innerHTML"       value="innerHTML"/>       
+        <input type="button" id="btn_vaciarInnerHTML" value="Vaciar innerHTML"/>
+        <input type="button" id="btn_crearNodos"      value="Crear nodos"/>      
+        <input type="button" id="btn_crearNodos2"     value="Crear nodos 2"/>
+        <input type="button" id="btn_vaciarSelect"    value="Vaciar select"/>
+    </div>
+
+    <hr/>
+
+    <div id="div1"></div>
+
+    <hr/>
+
+    <div id="div2"></div>
+
+    <hr/>
+
+    <div id="div3"></div>
+
+    <hr/>
+
+    <div align="center">
+        <select id="ciudades">
+            <option value="Getafe">Getafe</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Salamanca">Salamanca</option>
+            <option value="Santa Pola">Santa Pola</option>
+            <option value="Chinchón">Chinchón</option>
+        </select>
+    </div>
+
+    <hr/>
+
+    <div id="div5"></div>
+    
+</body>
+</html>

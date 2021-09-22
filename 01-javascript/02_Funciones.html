@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<script type="application/javascript">
+
+//
+//En JS las funciones son OBJETOS
+//
+
+//Los nombres de las funciones serán verbos
+//utilizaremos camel case
+
+//En JS las funciones no indican si devuelven algo o no
+//No existe la palabra reservada void
+
+function saludar(){
+    console.log("Buenos días")
+}
+//Para invocar una función se usa el nombre de la función + ()
+
+saludar()
+
+//El nomnbre de una función es una variable que la referencia.
+console.log(saludar) //Aparece la función (no la llamas).
+
+console.log(saludar()) //Buenos días CR, LF undefined
+
+//Las funciones pueden recibir parámetros
+//No se indica el tipo de los parámetros (normal)
+console.log("==========================")
+
+function sumar(s1, s2){
+    //Los parámetros recibidos son idénticos a  variables declaradas con VAR dentro de la función.
+    console.log("Suma:" + (s1 + s2))
+}
+sumar(10, 20) //30
+sumar(10, " Boniato") // 10 Boniato
+sumar(true, 1) //
+
+//Podemos invocar cualquier función con el número d eparámetros que queramos. No da error.
+//Solo tiene sentido si la función se ha programado pensando en esta posibilidad.
+sumar()
+sumar(1)
+sumar(1,2)
+sumar(1,2,3)
+sumar(1,2,3,4)
+sumar(1,2,3,4,5)
+
+//Dentro de una función JS disponemos de lavariable implícita 'arguments' donde encontraremos los parámetros recibidos.
+function sumarNumeros(){
+
+    console.log(arguments)
+
+    let total = 0
+    for(a=0; a<arguments.length; a++){
+        //total = total + arguments[escort]
+        total += arguments[a]
+    }
+    console.log(total)
+    return total
+}
+
+sumarNumeros()
+sumarNumeros(1)
+sumarNumeros(1,2)
+sumarNumeros(1,2,3)
+sumarNumeros(1,2,3,4)
+sumarNumeros(1,2,3,4,5)
+
+//Desde ESX se puede utilizar también la sintaxis de parámetros variables de C
+//En JS se llama 'spread'
+
+function sumarNumerosBis(...numeros){
+
+//console.log(arguments) Saca lo mismo que en el ejemplo anterior
+
+
+let total = 0
+for(a=0; a<numeros.length; a++){
+    //total = total + arguments[escort]
+    total += numeros[a]
+}
+console.log("(bis) "+total)
+return total
+}
+sumarNumerosBis()
+sumarNumerosBis(1)
+sumarNumerosBis(1,2)
+sumarNumerosBis(1,2,3)
+sumarNumerosBis(1,2,3,4)
+sumarNumerosBis(1,2,3,4,5)
+
+//
+//Las funciones pueden devolver un valor (y solo uno)
+//
+
+console.log("=========")
+function restar(minuendo, sustraendo){
+    let resta = minuendo-sustraendo
+    return resta
+}
+let resta = restar(50, 20)
+console.log(resta)
+
+//Aunque una función no devuelve nada nos permite hacer esta cosa
+//sin sentido:
+//function saludar(){
+//console.log("Buenos días")
+//}
+let resultado = saludar()
+console.log(resultado)//undefined
+
+//Desde ECMAScript 6 nos permiten asignar valores por defecto a los parámetros
+//
+console.log("=========")
+function ejemploAbstracto(dato1=100, dato2=200){
+    console.log(dato1)
+    console.log(dato2)
+}
+ejemploAbstracto() //100, 200
+ejemploAbstracto(1) //1 , 200
+ejemploAbstracto(1,2) // 1, 2
+ejemploAbstracto(1,2,3) //1, 2 
+
+//
+//Funciones anidadas/nested functions
+//En JS las funciones anidadads son closures
+//
+console.log("=========")
+
+function nido(){
+    console.log("Ejecuntando la función nido")
+
+    function pajaro(){
+        console.log("El pájaro está en el nido")
+    }
+    pajaro()
+}
+
+nido()
+//pajaro() no se puede llamar a una función anidada desde fuera de nido
+
+//
+//En JS las funciones son objetos y como tales podemos referenciarlas con variables
+//
+
+// function multiplicar(n1, n2){
+//     console.log(n1*n2)
+// }
+
+// multiplicar()
+
+//En este caso estamos creando una función ANÓNIMA y la estamos asignado como valor a la variable 'multiplicar'
+console.log("=========")
+
+let multiplicar = function(n1, n2){
+    console.log(n1*n2)
+}
+multiplicar(5, 25)
+
+//
+//En JS se pueden colocar los paréntesis a cualquier variable
+//Es sintácticamente correcto, pero solo tiene sentido si el balos de la variable
+//es una función
+
+let var1 = 10
+let var2 = true
+let var3 = function(){console.log("ARREA")}
+
+// var1() ZASCA
+// var2() ZASCA
+var3()
+
+//
+//Creando funciones con el prototipo Function
+//
+
+//-otro día-
+
+let borrar = []
+
+console.log(borrar)
+console.log(typeof borrar)
+
+borrar.push("Harry Callahan")
+console.log(borrar)
+
+console.log(borrar.push)
+
+</script>
+
+
+<body>
+
+    <h1>02_Funciones</h1>
+    
+</body>
+</html>

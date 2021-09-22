@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!--
+    JAVASCRIPT
+    ---------------------------
+    -Lenguaje de programación de alto nivel
+    -Lenguaje interpretado
+    -Ejecutado por un motor javascript
+    -Inicialmente solo en el navegador
+    -NO es un lenguaje multipropósito
+        -No permite el acceso al sistema de archivos
+        -No permite ejecutar comandos del sistema operativo
+        -No permite la apertura de sockets
+            -> Por ejemplo: no podemos conectar con una BB.DD
+    
+    -Sintaxis basada en C
+    -Nada que ver con Java
+    -Dinámico
+    -Secuencial (sin goto)
+    -Estructurado
+    -Orientado a objetos (por prototipado)
+    -Funcional
+    -No tipado (Cuando se declara una variable no es necesario un valor, no se declaran tipos, mas facil de equivocarnos)
+    -Case sensitive
+    -Tiene null
+    -No permite al programador crear hilos. 
+    -Tiene referencias, no punteros
+    -Serialización en profundiadad.
+    -Clonado de primer nivel.
+-->
+<!-- No deben usarse bloques JS en el HTML -->
+<!--
+    MIME TYPE
+    -text/javascript
+    -application/javascript
+-->
+
+<script type="application/javascript">
+    //Se pueden utilizar comillas simples y dobles
+    //Javascript tiene como separador el punto y coma
+    //-ES OPCIONAL
+
+    //alert("Nunca hay que utitlizar alert");
+    console.log("tampoco hay que usar la consola")
+
+    //Variables
+
+    //No están tipadas
+    //Pueden guardar:
+    //-Nada en absoluto
+    //-números
+    //-Cadenas de texto (arrays de caracteres)
+    //-un caracter
+    //-booleanos
+    //-referencia a un objeto
+    //-null
+
+    //Podemos usar variables sin molestarnos en declararlas
+    //Si lo hacemos así es obligatorio darles un valor
+
+    numero = 5
+    nombre = "Bart"
+    activo = true
+    variable = null
+    
+
+    //Las variables no declaradas se asigan a -SPOILER-
+
+    //Decalrando variables con 'var'
+    var altura = 14
+    var apellidos = "Sanchez"
+
+    //Se pueden dejar variables sin valor
+    var movida
+    console.log(movida)
+
+    var noSeQue = null
+    console.log(noSeQue) //En JS 'null' es un valor
+
+    //Comparando variables (independientemente de cómo estén declaradas)
+    //
+
+      //Con 'var' podemos volver a definir variables, pero está muy feo
+      var dato1 = 5
+      var dato1 = "HOLA CARACOLA"
+
+    //'==' compara las cosas 'por encima'
+    
+    if( movida == noSeQue ){
+        console.log("Iguales")
+    } else {
+        console.log("Distintos")
+    }
+
+    //'===' compara las cosas de forma estricta (valor y tipo)
+
+    if( movida === noSeQue ){
+        console.log("Iguales")
+    } else {
+        console.log("Distintos")
+    }
+
+
+    //Declarando las variables con 'let' (a partir de ECMASCRIPT 6)
+    //La diferencia con 'var' está en el ámbito de la variable
+    //
+    let dato2 = 42
+    let dato3 //undefined
+    let dato4 = null
+
+    //Con let no podemos redefinir variables
+    //let dato4 = "TOCOTÓ"
+
+    //Definiedo variables con 'const' (ES6)
+    //No cambia su valor. Es constante.
+    //Define una constante. Solo se le puede dar valor en el momento de la declaración
+
+    const PI = 3.1416
+    //PI = 6
+
+    // const x
+    // x = 5
+
+    // console.log(x)
+
+    //
+    // Cuando asignamos una variable al valor de otra podemos dejar preparado uin valor por defecto
+    //
+
+    let x1
+    let y1 = x1 || 22
+    console.log(y1)
+
+    let x2 = null
+    let y2 = x2 || 22
+    console.log(y2) //22
+
+    let x3 = "HOLA"
+    let y3 = x3 || 22
+    console.log(y3) //HOLA
+
+    //Averiguando el tipo de una variable
+    //
+
+    //La función isNaN
+    let numero2 = "cinco"
+    if(isNaN(numero)){
+        console.log("No es un número")
+    }
+
+    //Mucho mejor con typeof
+    //typeof es un operador
+    //valores devueltos por typeof
+    //-number, -string, -boolean, -object, -function, -undefined, -null, ...
+
+
+    console.log(typeof numero5)
+
+    if( typeof numero5 != "number"){
+        console.log("No es un número")
+    }
+
+    //Ámbito de las variables
+
+    //VAR
+    console.log("==========================")
+
+    function pruebaVar(){
+
+        //El ámbito de una variable declarada con 'var' es la función en la que está declarada
+
+        //Las variables declaradas con 'var' existen antes de que se ejecute la primera línea de código
+        console.log("variable1:"+variable1)
+        var variable1 = "HOLA"
+        console.log("variable1:"+variable1)
+
+        
+        //Si hubiese entrado en el if ( condición ) si que tendría valor.
+        if(1000 > 100){
+            var variable2 = "MOVIDA"
+
+        }
+        //Aunque no se meta en el if vemos que la variable existe, pero sin valor
+        //Si hubiera entrado en el if si que tendría valor.
+        console.log("variable2:" + variable2 )
+
+        //
+        console.log("a:"+ a) //undefined
+        for(var a=0; a<10; a++){
+            //...
+        }
+        console.log("a:"+ a);
+
+        ////En JS (y otros lenguajes) se pueden declarar bloques de código sin que estén asociados a algo (if, for, while)
+        {
+            var variable3 = "ARSA"            
+        }
+        console.log("variable3:"+variable3)//ARSA
+    }
+    pruebaVar()
+
+    //No son visibles fuera de la función
+
+    // console.log("variable1:"+variable1)
+    // console.log("variable2:"+variable2)
+    // console.log("a:"+ a);
+
+    //LET
+    console.log("==========================")
+
+    function pruebaLet() {
+
+        //El ámbito de las variables declaradas con let es el BLOQUE en el que están declaradas
+        //Como en C, JAVA, PHP.
+        let datoLet1 = "AAA"
+        console.log("dato1:"+datoLet1)//AAA
+
+        if(1000 > 100){
+            let datoLet2 = "MOVIDA"
+            console.log("variable2: " + datoLet2 ) //MOVIDA!
+        }
+        // Aquí desaparece la variable 'datoLet2'
+        //console.log("variable2: " + datoLet2 ) //ZASCA!
+
+        for(let a=0; a<10; a++){
+            //...
+        }
+        //console.log("a:"+ a) //ZASCA one more time!
+
+        {
+            let datoLet3 = "Para qué quieres esto..."
+        }
+        //console.log("datoLet3: " + datoLet3 )
+    }
+
+    pruebaLet()
+    
+    //Esta variable está fuera de su ámbito
+    //console.log("dato1:" + datoLet1 )//Zasca!
+
+    //
+    //El ámbito d euna variable declarada con const es el mismo que con 'let'
+    //la variable existe en el nloque en el que está declarada.
+    //
+
+    console.log("==========================")
+
+    //
+    //Variables utilizadas sin declaración previa
+    //
+
+    function pruebaVarSinDeclarar(){
+
+        //Utilizamos una variable sin haberla declarado
+        //Las variables sin declarar son asignadas al -SPOILER- al objeto Window.
+        //Se convierte en una suerte de variables globales
+
+        variableSinDeclarar = "Vamos  a ver qué pasa."
+        console.log("variableSinDeclarar: " + variableSinDeclarar) //correcto
+    }
+
+    //console.log("variableSinDeclarar: " + variableSinDeclarar) //Falla, no hemos llamado a la función.
+    pruebaVarSinDeclarar()
+    console.log("variableSinDeclarar: " + variableSinDeclarar) //correcto
+
+    //
+    //Cuando estamos fuera de las funciones no hauy diferencia perceptible entre var, let y const
+    //Si fuera de una funcion se utiliza una variable sin declarar se asigna al objeto Window
+    //y ya se podrá utilizat en cualquier parte
+
+    var v1 = 10; //No se convierte en global pero está en un ámbito superior.
+    let v2 = 20; //ídem
+    v3 = 30; //se asocia a window y se 'convierte en global'
+
+    function pruebecilla(){
+        console.log("v1:" + v1)
+        console.log("v2:" + v2)
+        console.log("v3:" + v3)
+    }
+
+    pruebecilla()
+
+    {
+        let let1 = 1
+        {
+            {
+                let let2 = 2
+                console.log(let1)
+            }
+        }
+    }
+</script>
+
+<body>
+    <h1>01_Variables</h1>
+</body>
+</html>
