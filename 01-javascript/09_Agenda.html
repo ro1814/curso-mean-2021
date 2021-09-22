@@ -8,6 +8,149 @@
 
 <script type="application/javascript">
 
+//Declaramos el array contactos como variable global
+let contactos = []
+
+function insertarContacto(){
+
+    // let nombre = document.getElementById("nombre").value
+    // let direccion = document.getElementById("direccion").value
+    // let telefono = document.getElementById("telefono").value
+    // let correoE = document.getElementById("correoE").value
+
+    // let contacto = {
+    //     id: Math.round(Math.random()*10000),//Licencia
+    //     nombre: nombre,
+    //     direccion: direccion,
+    //     telefono: telefono,
+    //     correoE: correoE
+    // }
+
+    // contactos.push(contacto)
+    // console.log(contactos)
+
+    //Como mas rabia nos de
+    // let contacto = {
+    //id: Math.round(Math.random()*10000), //Licencia
+    // nombre: document.getElementById("nombre").value    = ""
+    // direccion: document.getElementById("direccion").value = ""
+    // telefono: document.getElementById("telefono").value  = ""
+    // correoE: document.getElementById("correoE").value   = ""
+    // }
+        
+    console.log(("====================="))
+
+        let contacto = {
+
+            id: Math.round(Math.random()*10000),//Licencia
+
+        }
+        let nodos = document.querySelectorAll("#formulario input[type=text")
+        for(let nodo of nodos){
+
+            let propiedad = nodo.id
+            let valor = nodo.value
+
+            //Esto está...mal
+            //contacto.propiedad = valor
+            
+            //Esto esta bien
+            contacto[propiedad] = valor
+        }
+        contactos.push(contacto)
+        console.log(contactos)
+
+        vaciarFormulario()
+        rellenarTablaContactos()
+
+    //extraer los valores del formulario
+    //crear el contacto
+    //guardarlo en un array (habrá que aclarar un array en algún sitio)
+
+    //el array se llama 'contactos'
+}
+
+
+function vaciarFormulario(){    
+    /*
+    //Esto es perfectamente válido
+    document.getElementById("nombre").value    = ""
+    document.getElementById("direccion").value = ""
+    document.getElementById("telefono").value  = ""
+    document.getElementById("correoE").value   = ""
+
+    //Selectores css
+    document.querySelectorAll("#formulario") //Encuentra el nodo cuyo id es 'formulario'
+    document.querySelectorAll("input")       //Encuentra los nodos de tipo 'input' (incluye los botones)
+    document.querySelectorAll("#formulario input") //Nodos de tipo input que cuelguen de el nodo cuyo id es 'formulario'
+    document.querySelectorAll("#formulario input[type=text]") //Nodos de tipo input que tengan la propiedad type='text' que cuelguen de el nodo cuyo id es 'formulario'
+    */
+
+    //Esto es más elaborado (solo funciona para cajas de texto)
+    let nodos = document.querySelectorAll("#formulario input[type=text]")
+    for(let nodo of nodos){
+        nodo.value = ""
+    }
+}
+
+function rellenarTablaContactos(){
+
+    //VACIAR el TBODY (utilizando innerHTML)
+    
+    //recorre el array
+    //crear un tr por cada contacto
+    //añadirlo al tbody de la tabla
+
+    //hay que hacerlo con la movida de los nodos
+
+    let tabla = document.getElementById("tablaPersonas")
+    tabla.innerHTML=""
+
+    for(let contacto of contactos){
+
+        let tr = document.createElement("tr")
+        let td1 = document.createElement("td")
+        let td2 = document.createElement("td")
+        let td3 = document.createElement("td")
+        let td4 = document.createElement("td")
+        let txt1 = document.createTextNode(contacto.nombre)
+        let txt2 = document.createTextNode(contacto.direccion)
+        let txt3 = document.createTextNode(contacto.telefono)
+        let txt4 = document.createTextNode(contacto.correoE)
+        td1.append(txt1)
+        td2.append(txt2)
+        td3.append(txt3)
+        td4.append(txt4)
+        tr.append(td1, td2, td3,td4)
+        
+        tabla.append(tr)
+
+        tr.onclick = seleccionarContacto
+
+    }
+
+}
+
+function seleccionarContacto(){
+    console.log("click")
+}
+
+
+function inicializar(){
+
+    document.getElementById("btnVaciar").onclick = vaciarFormulario
+    document.getElementById("btnInsertar").onclick = insertarContacto
+
+
+}
+
+window.onload = inicializar
+
+
+
+
+
+
 
 </script>
 
@@ -74,18 +217,6 @@
         <tbody id="tablaPersonas"></tbody>
     </table>
     
-    <hr/>
-
-    <table align="center" border="1">
-        <tr>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Correo E</th>
-        </tr>
-        <tbody id="tablaPersonas2"></tbody>
-    </table>
-
 </body>
 
 </html>
