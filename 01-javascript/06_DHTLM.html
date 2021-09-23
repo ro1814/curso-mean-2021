@@ -65,7 +65,15 @@ function obtenerListadoPeliculas(){
         { 
           titulo   : 'Alien',
           director : 'Ridley Scott',
-          genero   : 'Ci-Fi' 
+          genero   : 'Ci-Fi',
+          actores  : [
+              {
+                nombre : 'Harrison For'
+              },
+              {
+                nombre : 'While Smith'
+              },
+          ] 
         },
         { 
           titulo   : 'Cazafantasmas',
@@ -170,24 +178,6 @@ function crearNodos2(){
     document.getElementById("div3").innerHTML = html
 }
 
-
-
-//En esta función vamos a asignar manejadores de eventos a los 
-//botones que los necesiten
-function inicializar(){
-    //let btnDocumentWrite = document.getElementById("btn_documentWrite")
-    //btnDocumentWrite.onclick = document_write //Percatense de que no tiene los paréntesis
-
-    //Lo mismo en una única línea
-    document.getElementById("btn_documentWrite").onclick = document_write
-    document.getElementById("btn_innerHTML").onclick = innerHTML
-    document.getElementById("btn_vaciarInnerHTML").onclick = vaciarInnerHTML
-    document.getElementById("btn_crearNodos").onclick = crearNodos
-    document.getElementById("btn_crearNodos2").onclick = crearNodos2
-    document.getElementById("btn_vaciarSelect").onclick = vaciarSelect
-}
-
-
 function vaciarSelect(){
 
     //A día de hoy esta es la manera más corta (pero no la mejor) de vaciar un desplegable:
@@ -230,19 +220,38 @@ function vaciarSelect(){
     //let btnInnerHTML = document.getElementById("btn_innerHTML")
     //btnInnerHTML.remove()
 
+
     let ciudades = document.getElementById("ciudades")
     let hijos = ciudades.childNodes
 
-    for(let a=0; a<hijos.length; a++){
-        hijos[a].remove()
-    }
-    return
-
     let numeroNodos = hijos.length
     for(let a=0; a<numeroNodos; a++){
-        hijos[0].remove()
+        hijos[0].remove() //Eliminamos el primero!
     }
 
+    /*
+    //Con un while
+    let sel = document.getElementById("ciudades")
+    while(sel.firstChild) {
+        sel.removeChild(sel.firstChild)
+    }
+    */
+
+}
+
+//En esta función vamos a asignar manejadores de eventos a los 
+//botones que los necesiten
+function inicializar(){
+    //let btnDocumentWrite = document.getElementById("btn_documentWrite")
+    //btnDocumentWrite.onclick = document_write //Percatense de que no tiene los paréntesis
+
+    //Lo mismo en una única línea
+    document.getElementById("btn_documentWrite").onclick = document_write
+    document.getElementById("btn_innerHTML").onclick = innerHTML
+    document.getElementById("btn_vaciarInnerHTML").onclick = vaciarInnerHTML
+    document.getElementById("btn_crearNodos").onclick = crearNodos
+    document.getElementById("btn_crearNodos2").onclick = crearNodos2
+    document.getElementById("btn_vaciarSelect").onclick = vaciarSelect
 }
 
 ///////////////////
@@ -275,7 +284,6 @@ console.log(window)
 
 window.onload = inicializar
 
-
 </script>
 
 <body>
@@ -289,9 +297,6 @@ window.onload = inicializar
     </marquee>
 
     <hr/>
-
-    <h1>HOLA</h1>
-
 
     <div id="botones" align="center">
         <input type="button" id="btn_documentWrite"   value="Document.write"/>

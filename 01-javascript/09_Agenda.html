@@ -10,7 +10,7 @@
 
 //Declaramos al array de contactos como una variable global
 let contactos = []
-
+let idContactoSel = null
 
 function insertarContacto(){
 
@@ -82,13 +82,49 @@ function vaciarFormulario(){
     for(let nodo of nodos){
         nodo.value = ""
     }
+    idContactoSel = null
 }
 
 function seleccionarContacto(idContacto){
     console.log("ID:"+idContacto)
 
+    /*Con un for normal
+    for(let a=0; a<contactos.length; a++){
+        let contacto = contactos[a]
+        if( contacto.id == idContacto ){
+            document.getElementById("nombre").value    = contacto.nombre
+            document.getElementById("direccion").value = contacto.direccion
+            document.getElementById("telefono").value  = contacto.telefono
+            document.getElementById("correoE").value   = contacto.correoE   
+            break //Nos salimos del for         
+        }
+    }
+    */
 
+    /*
+    for(let contacto of contactos){
+        if( contacto.id == idContacto ){
+            document.getElementById("nombre").value    = contacto.nombre
+            document.getElementById("direccion").value = contacto.direccion
+            document.getElementById("telefono").value  = contacto.telefono
+            document.getElementById("correoE").value   = contacto.correoE   
+            break //Nos salimos del for         
+        }        
+    }
+    */
     
+    for(let contacto of contactos){
+        if( contacto.id == idContacto ){
+            for(let propiedad in contacto){
+                let nodo = document.getElementById(propiedad)
+                if(nodo != null){
+                    nodo.value = contacto[propiedad]
+                }
+            }
+            idContactoSel = idContacto
+            break
+        }
+    }
 }
 
 function rellenarTablaContactos(){
@@ -126,10 +162,84 @@ function rellenarTablaContactos(){
     }
 }
 
+function modificarContacto(){
+
+    //recoger los datos del formulario
+    //modificar el objeto que está en el array
+    //actualizar la tabla
+    //vaciar el formulario
+
+    let nombre    = document.getElementById("nombre").value    
+    let direccion = document.getElementById("direccion").value 
+    let telefono  = document.getElementById("telefono").value  
+    let correoE   = document.getElementById("correoE").value   
+
+    for(let contacto of contactos){
+        if(contacto.id == idContactoSel){
+            contacto.nombre    = nombre
+            contacto.direccion = direccion
+            contacto.telefono  = telefono
+            contacto.correoE   = correoE
+
+            vaciarFormulario()
+            rellenarTablaContactos()
+            break
+        }
+    }    
+
+}
+
+function borrarContacto(){
+
+    for(let a=0; a<contactos.length; a++){
+        let contacto = contactos[a]
+        if(contacto.id == idContactoSel){
+            contactos.splice(a,1)
+
+            vaciarFormulario()
+            rellenarTablaContactos()            
+            break
+        }
+    }
+
+
+}
+
+function guardarContactos(){
+
+    //Session y Local storage son dos estructuras de datos clave-valor
+    //que se almacenan en el navegador
+    //
+    //Los valores guardados en el SessionStorage permanecen en el navegador mientras la 
+    //pestaña está abierta
+    //
+    //Los valores guardados en el localStorage se asocian al sitio y permanecen en el navegador
+    //aunque se cierre (Pero si el usuario vacía la caché se borra)
+    //
+    //Tanto la clave como el valor serán cadenas de texto
+    //Session y Local storage tienen las mismas funciones:
+    //  sessionStorage.setItem(clave,valor)
+    //  sessionStorage.getItem(clave)
+    //  sessionStorage.removeItem(clave)
+    //  sessionStorage.clear()
+
+    localStorage.setItem("contactos", JSON.stringify(contactos))
+
+}
+
 function inicializar(){
 
-    document.getElementById("btnVaciar").onclick   = vaciarFormulario
-    document.getElementById("btnInsertar").onclick = insertarContacto
+    document.getElementById("btnVaciar").onclick    = vaciarFormulario
+    document.getElementById("btnInsertar").onclick  = insertarContacto
+    document.getElementById("btnModificar").onclick = modificarContacto
+    document.getElementById("btnBorrar").onclick    = borrarContacto
+    document.getElementById("btnGuardar").onclick   = guardarContactos
+
+    let json = localStorage.getItem("contactos")
+    if(json != null){
+        contactos = JSON.parse(json)
+        rellenarTablaContactos()
+    }
 
 }
 
