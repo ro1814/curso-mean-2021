@@ -2,6 +2,7 @@ const http = require("http")
 const fs   = require("fs")
 
 
+
 ///////////////////////////////////////////////////////////////////////////
 // SERVER                                                                //
 ///////////////////////////////////////////////////////////////////////////
@@ -18,17 +19,16 @@ servidor.listen(2000, function(){
 ///////////////////////////////////////////////////////////////////////////
 
 let statusCodes = {
-    400 : 'Petición incorrecta',
     404 : 'Recurso no encontrado',
     405 : 'Método no permitido',
-    415 : 'Media Type no soportado'
+    400 : 'Petición incorrecta'
 } 
 
 let mimeTypes = {
     html : 'text/html',
     css  : 'text/css',
     js   : 'application/javascript',
-    //ico  : 'image/x-icon'
+    ico  : 'image/x-icon'
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -65,24 +65,21 @@ function leerRecurso(url, response){
             return
         } 
 
-        let extensionRecurso = url.split(".")[1]
-        let mimeType = mimeTypes[extensionRecurso]
-        if(!mimeType){
-            devolverError(response, 415)
-            return
-        }
 
-        response.setHeader('Content-type', mimeType)
+        // /noseque/nosecuantos . html
+
+        let extensionRecurso = url.split(".")[1]
+
+
         let contenido = buffer.toString()
         response.end(contenido)
     })
 }
 
-//mensaje es un parámetro opcional
+
 function devolverError(response, statusCode, mensaje){
 
     response.setHeader('Content-type', mimeTypes.html)
-    //Response no admite valores incorrectos en 'statusCode'
     response.statusCode = statusCode
 
     if(!mensaje){
