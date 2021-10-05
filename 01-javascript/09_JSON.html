@@ -32,7 +32,11 @@ JSON
     {
         "id"        : "53",
         "nombre"    : "Ringo Starr",
-        "direccion" : "bbb",
+        "direccion" : {
+          "ciudad" :
+          "calle"  :
+          "numero" :
+        }
         "telefono"  : "cc"
     },
     {
@@ -102,6 +106,7 @@ let json2 = JSON.stringify(coche)
 console.log(json2)
 let coche2 = JSON.parse(json2)
 console.log(coche2)
+
 
 </script>
 
