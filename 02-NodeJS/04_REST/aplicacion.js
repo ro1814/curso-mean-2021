@@ -1,6 +1,12 @@
+
 const http = require("http")
 
+const mongoDBUtil = require("./mongoDBUtil")
 const negocioDiscos = require("./negocioDiscos.js") //La extensión 'js' es opcional
+
+
+//Esto todavía es cutre, pero funciona
+mongoDBUtil.conectarBBDD()
 
 /*
 API
@@ -50,6 +56,9 @@ function procesarPeticion(request, response){
         modificar(request, response)          
     } else if( metodo=="DELETE" && url.match("^/discos/[0-9a-fA-F]{24}$") ){
         borrar(request, response)  
+    } else if( metodo=="POST" && url=="/hasta_luego_lucas" ){
+        console.log("Adiós mundo cruel!")
+        process.exit(0)  
     } else {
         //404!
         response.end("MAL")
@@ -89,8 +98,25 @@ GET /discos/:id
 function buscarPorId(request, response){    
     //Aqui hay que extraer un valor de la URL
     let id = request.url.split("/")[2]
+
     console.log("buscando un disco por el id:"+id)
-    response.end("OK")
+
+    negocioDiscos.buscarPorId(id)
+        .then(function(disco){
+            if(!disco){
+                response.statusCode = 404
+                response.end()
+                return             
+            }
+            response.setHeader("Content-Type","application/json")
+            response.end(JSON.stringify(disco))
+
+        })
+        .catch(function(err){
+            response.statusCode = 500
+            response.end()
+        })
+
 }
 
 /*
