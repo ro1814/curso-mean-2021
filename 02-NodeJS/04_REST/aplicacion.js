@@ -1,12 +1,29 @@
-
 const http = require("http")
 
 const mongoDBUtil = require("./mongoDBUtil")
 const negocioDiscos = require("./negocioDiscos.js") //La extensión 'js' es opcional
 
+//////////////////////////////////////////////////////////////////
+//CONECTAMOS CON LA BASE DE DATOS/////////////////////////////////
+//////////////////////////////////////////////////////////////////
 
-//Esto todavía es cutre, pero funciona
-mongoDBUtil.conectarBBDD()
+mongoDBUtil.conectarBBDD(arrancarServidor)
+
+//////////////////////////////////////////////////////////////////
+//CREAMOS, CONFIGURAMOS Y ARRANCAMOS EL SERVIDOR//////////////////
+//////////////////////////////////////////////////////////////////
+
+function arrancarServidor(){
+    console.log("Arrancando el servidor HTTP")
+    let servidor = http.createServer(procesarPeticion)
+    servidor.listen(3000, function(){
+        console.log("Esperando peticiones en el puerto 3000")
+    })
+}
+
+//////////////////////////////////////////////////////////////////
+//FUNCIÓN QUE PROCESARÁ TODAS LAS PETICIONES//////////////////////
+//////////////////////////////////////////////////////////////////
 
 /*
 API
@@ -18,19 +35,6 @@ POST    /discos      {json}  {json}     insertar un disco
 PATCH   /discos/:id  {json}  {json}     modificar un disco
 DELETE  /discos/:id  -       -          borrar un disco
 */
-
-//////////////////////////////////////////////////////////////////
-//CREAMOS, CONFIGURAMOS Y ARRANCAMOS EL SERVIDOR//////////////////
-//////////////////////////////////////////////////////////////////
-
-let servidor = http.createServer(procesarPeticion)
-servidor.listen(3000, function(){
-    console.log("Esperando peticiones en el puerto 3000")
-})
-
-//////////////////////////////////////////////////////////////////
-//FUNCIÓN QUE PROCESARÁ TODAS LAS PETICIONES//////////////////////
-//////////////////////////////////////////////////////////////////
 
 function procesarPeticion(request, response){
     
@@ -60,8 +64,7 @@ function procesarPeticion(request, response){
         console.log("Adiós mundo cruel!")
         process.exit(0)  
     } else {
-        //404!
-        response.end("MAL")
+        devolverError(404, "Petición desconocida", response)
     }
     
 }
@@ -89,7 +92,15 @@ GET /discos
 function listar(request, response){
     //Aqui no hay que extraer nada del request
     console.log("listando...")
-    response.end("OK")
+
+    negocioDiscos.listar()
+        .then(function(discos){
+            response.setHeader("Content-Type","application/json")
+            response.end(JSON.stringify(discos))
+        })
+        .catch(function(err){
+            devolverError(500, "Hubo un error con la bb.dd.", response)
+        })    
 }
 
 /*
@@ -104,17 +115,14 @@ function buscarPorId(request, response){
     negocioDiscos.buscarPorId(id)
         .then(function(disco){
             if(!disco){
-                response.statusCode = 404
-                response.end()
+                devolverError(404, `No existe un disco con el id ${id}`, response)
                 return             
             }
             response.setHeader("Content-Type","application/json")
             response.end(JSON.stringify(disco))
-
         })
         .catch(function(err){
-            response.statusCode = 500
-            response.end()
+            devolverError(500, "Hubo un error con la bb.dd.", response)
         })
 
 }
@@ -124,6 +132,10 @@ POST /discos
 CT: app/json
 ------------
 { disco }
+201 CREATED
+CT: app/json
+------------
+{ _id : ID }
 */
 function insertar(request, response){
     console.log("insertando...")
@@ -139,17 +151,33 @@ function insertar(request, response){
         console.log("Body:",disco)
 
         //llamadita a la lógica de negocio
-
-        response.end("OK (que no se me olvide quitar este response.end)")
+        negocioDiscos.insertar(disco)
+            .then(function(result){
+                response.statusCode = 201
+                response.setHeader('Content-Type','/application/json')
+                let respuesta = {
+                    codigo : 201,
+                    _id : result.insertedId
+                }
+                response.end(JSON.stringify(respuesta))
+            })
+            .catch(function(err){
+                devolverError(500, "Hubo un error con la bb.dd.", response)
+            })
     })
-
 }
 
 /*
 PATCH /discos/:id
 CT: app/json
 ------------
-{ disco }
+{ 
+    _id : ABCDEF <-- este id será ignorado de manera activa
+    titulo :
+    grupo :
+    year :
+    discografica :      
+}
 */
 function modificar(request, response){
 
@@ -160,11 +188,20 @@ function modificar(request, response){
         console.log("Body:",contenidoBody.toString())
         console.log("Body:",disco)
 
-        response.end("OK (que no se me olvide quitar este response.end)")
+        disco._id = id
+        negocioDiscos.modificar(disco)
+            .then(function(resultado){
+                if(!resultado.value){
+                    devolverError(404, `No existe un disco con el id ${id}`, response)
+                    return             
+                }
+                response.setHeader("Content-type","application/json")
+                response.end(JSON.stringify(resultado.value))
+            })
+            .catch(function(err){
+                devolverError(500, "Hubo un error con la bb.dd.", response)
+            })
     })
-
-    console.log("modificando...")
-    response.end("OK")
 }
 
 /*
@@ -176,5 +213,34 @@ function borrar(request, response){
     //Tenemos que el id de la url
     let id = request.url.split("/")[2]
 
+    negocioDiscos.borrar(id)
+        .then(function(result){
+            if(!result.value){
+                devolverError(404, `No existe un disco con el id ${id}`, response)
+                return                  
+            }
+            response.setHeader('Content-Type','/application/json')
+            let respuesta = {
+                codigo : 200,
+                mensaje : `El disco ${id} se ha borrado`
+            }
+            response.end(JSON.stringify(respuesta))            
 
+        })
+        .catch(function(err){
+            devolverError(500, "Hubo un error con la bb.dd.", response)
+        })
+
+}
+
+
+//Esta función estaría mucho mejor en un fichero aparte
+function devolverError(codigo,mensaje,response){
+    let error = {
+        codigo  : codigo,
+        mensaje : mensaje
+    }
+    response.statusCode = codigo
+    response.setHeader("Content-Type","application/json")    
+    response.end(JSON.stringify(error))
 }
