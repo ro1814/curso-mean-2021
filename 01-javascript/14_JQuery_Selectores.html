@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!--
+    Content
+    Delivery
+    Network
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" 
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+    crossorigin="anonymous"></script>
+    -->
+
+
+    <!-- 
+    Podemos ahorrarnos el './' si queremos indicar una ruta relativa
+    src="./jquery.js" 
+    -->
+    <script type="application/javascript" src="jquery.js"></script>
+
+</head>
+
+<script type="application/javascript">
+
+//La librería JQuery define la función jQuery
+//Tambien define un 'alias' para esa función: $
+//function jQuery(){
+//    //...
+//    console.log("Ola ke tal")
+//}
+//let $ = jQuery
+//jQuery()
+//$()
+
+function pruebas1(){
+    console.log("Funcion 1")
+}
+function pruebas2(){
+    console.log("Funcion 2")
+}
+function pruebas3(){
+    console.log("Funcion 3")
+}
+
+////////////////////////////////////////////
+//Asociando una funcion al evento 'onload'//
+////////////////////////////////////////////
+
+//Con JS
+//window.onload = pruebas
+
+//Con JQuery, manera antigua
+//$(document).ready(pruebas)
+
+//Con JQuery 
+
+//$(pruebas1)
+//Podemos añadir varias funciones y se invocarán todas, en el orden en el que se añadieron
+//$(pruebas2)
+//$(pruebas3)
+
+$(pruebas)
+
+function pruebas(){
+
+    //JQuery nos permitirá seleccionar nodos del árbol DOM con total precision
+    //gracias a sus selectores que utilizan la misma sintaxis que los de CSS
+    //
+    
+    //Lo consiguen utilizando querySelectorAll
+    ///////////////////////////////
+    //Localizando todos los nodos//
+    ///////////////////////////////
+
+    //El objeto JQuery es una suerte de array extendido
+    let objetoJQuery = $("*")
+    console.log(objetoJQuery)
+    console.log(objetoJQuery.length) //Numero de nodos localizados
+
+    /////////////////////////
+    //Buscando nodos por id//
+    /////////////////////////
+    console.log("=======================================")
+    //let nodo = document.querySelector("#div1") Con JS
+    
+    let jQueryObj = $("#div1")
+    //Cuidado que no nos dan el nodo. Siempre será un array
+    
+    let nodo = jQueryObj[0]
+    console.log(nodo)    
+
+    //Jquery tiene además la función 'get'
+    nodo = jQueryObj.get(0)
+    console.log(nodo)  
+    
+    ///////////////////////////////////////
+    //Buscando nodos por tipo de etiqueta//
+    ///////////////////////////////////////
+    console.log("=======================================")
+    //Todos los <th> del árbol DOM
+        //Localizando todos los 'input'
+        jQueryObj = $("th") //Muy parecido a document.getElementsByTagName("th") ó document.querySelectorAll("th")
+    jQueryObj = $("input")
+    //Despues de todo el objeto jQuery es un array...
+    for(let nodo of jQueryObj){
+        nodo.value = "hola"
+    }
+
+    //El objeto JQuery tiene una serie de funciones de utilidad que
+    //se aplican a todos los nodos contenidos en el array
+    //La funcion val trabaja con la propiedad 'value' de los nodos
+    //si recibe un parámetro lo asigna (nodo.value = valor)    
+
+    //jQueryObj = $("input")
+    //jQueryObj.val("HOLO, que es más gordo")
+
+    $("input").val("HOLO, que es más gordo")
+    //si no recibe parámetros devuelve el value (return nodo.value)
+    console.log($("#txt1").val())
+
+    //////////////////////////////
+    //Buscando nodos por 'class'//
+    //////////////////////////////
+    console.log("=======================================")
+
+    let nodo1 = $(".titulo")[0]
+    let nodo2 = $(".titulo").get(0) //hace lo mismo
+    //Con JS
+    //nodo1.style.color = "orange"
+    //nodo1.style.background = "lightGreen"
+
+    //Más funciones del objeto jQuery
+    $(".titulo").css('color','yellow')
+    $(".titulo").css('background-color','lightGreen')
+
+    //css() y otras funciones de jquery admiten distintos tipos de parámetros
+    $(".titulo").css({
+        'color' : 'lightGreen',
+        'background-color' : 'yellow'
+    })    
+
+    //css tambien sirve para acceder al valor
+    console.log($(".titulo").css('color'))
+
+    //Las funciones del objeto jQuery se peden concatenar, porque todas devuelven THIS
+
+    $(".titulo")
+        .css("color","lightGreen")
+        .css("background-color","orange")    
+
+
+    $("input")
+        .css("color", "red")
+        .val("AC/DC")      
+        
+    //Solo el primero
+    $("input")
+        .first()
+        .css("color", "purple")
+        .val("DEEP PURPLE")   
+        
+    /////////////////////////
+    //Buscando por atributo//
+    /////////////////////////
+    console.log("=======================================")    
+    //Dame los nodos que tengan el atributo 'dato' no importando su valor
+    $("[dato]").css('border','3px solid green')
+
+    //buscando nodos con cierto atributo y valor
+    $("[dato=1000]") //El valor es exactamente igual
+    $("[dato!=100]") //El valor es distinto
+    $("[dato*=123]") //El valor del atributo contiene '123'
+    $("[dato$=123]") //El valor del atributo termina por '123'
+    $("[dato^=123]") //El valor del atributo comienza por '123'
+    $("[dato~=123]") //El valor del atributo contiene la palabra ' 123 '     
+
+    ////////////////////////////
+    //Selector de pseudoclases//
+    ////////////////////////////
+    console.log("=======================================")
+
+    //Una lista con las opciones que estén seleccionadas en todos desplegables 
+    let opcionesSeleccionadas = $("option:selected")
+    for(let opcion of opcionesSeleccionadas){
+        console.log(opcion)
+    }
+    
+    let checkboxMarcados = $("input:checked")
+    for(let chk of checkboxMarcados){
+        console.log(chk.id)
+    }    
+
+    let inputDeshabilitados = $("input:disabled")    
+
+    ///////////////////////////
+    //Concatenando selectores//
+    ///////////////////////////
+    console.log("=======================================")
+
+    //Si los selectores se separan por comas se suman
+    //Es un OR
+    //Es decir: se buscan nodos que cumplan al menos uno de los selectores
+    $("[type=text], th").css('background-color','pink')
+    
+    //Si los selectores se colocan juntos se multiplican
+    //Es un AND
+    //Es decir: se buscan nodos que cumplan todos los selectores indicados
+    $("[type=text][movida]").css('backgroundColor', 'yellow')
+        
+    //Descendientes (no importa el nivel)
+    $("#div3 [type=text]").css("border", "3px blue solid")    
+
+
+    //Descendientes directos
+    $("#div3 > [type=text]").css("border", "3px green solid")      
+
+
+    ////////////////////////////////////
+    //Trabajando con el array de nodos//
+    ////////////////////////////////////
+
+    $("table").get(1) //La segunda tabla (devuelve el nodo)
+    $("table")[1]     //La segunda tabla (devuelve el nodo)
+
+    
+    //Las funciones que concatenamos a la llamada a '$' se aplican
+    //a todos los nodos encontrados
+    $("table").css("background-color", "grey")
+    
+    //Solo al primero
+    $("table").first().css("background-color", "grey")
+        
+    //Solo al último
+    $("table").last().css("background-color", "grey")
+    
+    
+    $("#tabla tr") //todos los tr de la tabla cuyo id es 'tabla'
+        
+    $("#tabla tr:even").css("background-color",'lightGray')
+    $("#tabla tr:odd").css("background-color",'white')
+    $("#tabla tr:eq(5)").css("background-color",'yellow')
+    $("#tabla tr:lt(3)").css("background-color",'blue')
+    $("#tabla tr:gt(7)").css("background-color",'lightGreen')
+
+    //////////////////////////////
+    //Buscando en nodos de texto//
+    //////////////////////////////
+    $("h1:contains('JQuery')").html("<font color='lightGreen'>JQUERY GRÁN RESERVA</font>")
+
+
+    /*
+    function _jQuery(selector){
+    }
+    this.nodos = document.querySelectorAll(selector)
+    _jQuery.prototype.val = function(valor){
+        for(let nodo of this.nodos){
+            nodo.value = valor
+        }
+        return this
+    }
+    _jQuery.prototype.css = function(clave, valor){
+        for(let nodo of this.nodos){
+            nodo.style[clave] = valor
+        }
+        return this
+    }
+
+    let J = _jQuery
+
+    new J("input")
+        .val("HABER QUE PASA")
+        .css("color","pink")
+    */
+
+}
+
+</script>
+
+<body>    
+
+    <marquee>
+        <h1 id="X" class="titulo">JQuery gran reserva</h1>
+    </marquee>
+    
+    <hr/>
+
+    <div id="form1">
+        <input type="text" id="txt1"/>
+        <input type="text" id="txt2" movida="movida"/>
+        <input type="text" id="txt3"/>
+        <input type="text" id="txt4" movida="movida"/>
+    </div>
+
+    <hr/>
+
+    <did id="form2">
+        <input type="text" id="txt5" dato="101"/>
+        <input type="text" id="txt6" movida="movida"/>
+        <input type="text" id="txt7"/>
+        <input type="text" id="txt8" movida="movida"/>
+        <br/>
+
+        <input type="button" id="btn1" value="Boton 1" movida="movida"/>
+        <input type="button" id="btn2" value="Boton 2"/>
+        <input type="button" id="btn3" value="Boton 3" movida="movida"/>
+        <input type="button" id="btn4" value="Boton 4"/>
+    </div>
+
+    <hr/>
+
+    <div id="div1"></div>
+
+    <hr/>
+
+    <div id="div2">
+
+        <p align="center">
+
+            <select id="ciudad">
+                <option>Getafe</option>
+                <option>Madrid</option>
+                <option>Salamanca</option>
+                <option>Santa Pola</option>
+            </select>
+    
+            <select id="Colores">
+                <option>Rojo</option>
+                <option>Verde</option>
+                <option>Azul</option>
+            </select>
+
+            <input type="button" value="Dale" onclick="prueba()"/>
+    
+            <br/>
+
+            <input type="checkbox" id="chk1"/>
+            <input type="checkbox" id="chk2" checked="checked"/>
+            <input type="checkbox" id="chk3"/>
+            <input type="checkbox" id="chk4" checked="checked"/>
+            <input type="checkbox" id="chk5"/>
+            <input type="checkbox" id="chk6" checked="checked"/>
+
+            <br/>
+
+            <input type="radio" name="rb" id="rb1"/>
+            <input type="radio" name="rb" id="rb2"/>
+            <input type="radio" name="rb" id="rb3"/>
+            <input type="radio" name="rb" id="rb4"/>
+            <input type="radio" name="rb" id="rb5"/>
+            <input type="radio" name="rb" id="rb6"/>
+
+        </p>
+            
+    </div>
+
+    <hr/>
+    
+    <div id="div3">
+        <input type="text" id="txt9"/>
+        <input type="text" id="txt10" movida="movida"/>
+
+        <div id="div4">
+            <input type="text" id="txt11"/>
+            <input type="text" id="txt12" movida="movida"/>
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="5">
+        <table border="1" width="400px" id="tabla">
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                </tr>
+                <tr>
+                    <td>25</td>
+                    <td>26</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td>32</td>
+                    <td>33</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>    
+    
+    <hr/>
+    
+</body>
+</html>
