@@ -1,3 +1,33 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@ro1814 
+lrag
+/
+MEAN_2021_2
+Public
+1
+11
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+MEAN_2021_2/01-Javascript/15_JQuery_DHTML.html
+
+Nombre de usuario JQuery Gran Reserva
+Latest commit cf91e07 38 seconds ago
+ History
+ 0 contributors
+130 lines (98 sloc)  3.69 KB
+   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +40,6 @@
     Content
     Delivery
     Network
-
     <script src="https://code.jquery.com/jquery-3.6.0.js" 
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
     crossorigin="anonymous"></script>
@@ -81,15 +110,27 @@ function pruebas(){
     $("<h2>Siete</h2><h2>caballos</h2><h2>vienen</h2><h2>de</h2><h2>Bonanza</h2>")
         .appendTo("#span4")
 
-    //
-    $("<h2><font color='lightBlue'>!Hola Raffaella¡</font></h2>")
+    //Este ejemplo añade hijos a todos los espanes que haya o haiga
+    $("<h2><font color='lightBlue'>!Hola Rafaela¡</font></h2>")
         .appendTo("span")
 
-    nodo = $("#span3").get(0)
-    console.log(nodo.childNodes)
-    nodo = $("#span5").get(0)
-    console.log(nodo.childNodes)
-
+    //
+    //Añadiendo nodos a posiciones concretas
+    //
+    $("#lista").append("<li>List item 1</li>")
+    $("#lista").append("<li>List item 2</li>")
+    $("#lista").append("<li>List item 3</li>")
+    $("#lista").append("<li id='separador'>====================</li>")    
+    $("<li>List item 4</li>").appendTo("#lista")
+    $("<li>List item 5</li>").appendTo("#lista")
+    $("<li>List item 6</li>").appendTo("#lista")
+    
+    //prepend y prependTo añaden al principio
+    $("#lista").prepend("<li>PRIMERO</li>")
+    
+    //antes o despues de un node concreto
+    $("#separador").before("<li>ANTES</li>")
+    $("#separador").after("<li>DESPUES</li>")            
 
 }
 
@@ -116,3 +157,16 @@ function pruebas(){
 
 </body>
 </html>
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete

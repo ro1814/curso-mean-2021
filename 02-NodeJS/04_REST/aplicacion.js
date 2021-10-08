@@ -27,6 +27,7 @@ function arrancarServidor(){
 
 /*
 API
+
 Método  Url          Body    Respuesta  Funcionalidad
 ---------------------------------------------------------------
 GET     /discos      -       [{json}]   listar todos los discos
@@ -38,6 +39,13 @@ DELETE  /discos/:id  -       -          borrar un disco
 
 function procesarPeticion(request, response){
     
+    //Vamos a añadir estos headers a todas las respuestas que demos, sean options o no:
+    response.setHeader("Access-Control-Allow-Origin", "*")
+    response.setHeader('Access-Control-Allow-Methods', 
+                    'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+    response.setHeader("Access-Control-Allow-Headers", 
+                    "Origin, X-Requested-With, Content-Type, Accept, Authorization")  
+
     let metodo = request.method.toUpperCase()
     let url = request.url
     
@@ -75,14 +83,18 @@ function procesarPeticion(request, response){
 
 /*
 Las tareas de la lógica de control en un api REST son las siguientes:
+
 -Extraer de la petición los valores necesarios
     -query parameters
     -parámetros interpolados en la ruta
     -contenido del body
     -valores en los headers
     -cualquier combinación de los anteriores
+
 -Invocar la función con la lógica de negocio
+
 -Componer y entregar la respuesta
+
 -Y YA!
 */
 
@@ -132,6 +144,7 @@ POST /discos
 CT: app/json
 ------------
 { disco }
+
 201 CREATED
 CT: app/json
 ------------
