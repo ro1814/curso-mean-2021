@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="./jquery.js"></script>
+</head>
+
+<script type="text/javascript">
+
+
+$(inicializar)
+
+function inicializar(){
+
+    $("h2")             //Todos los H2
+    $("h2[id]")         //Todos los h2 que tengan id
+    $("h2[id^=color-]") //Todos los h2 que tengan un id que comience por "color-"
+
+    //Sin la función each
+    //let jQueryObj = $("h2[id^=color-]")
+    //for(let nodo of jQueryObj){
+    //    nodo.innerHTML = "Tocotó"
+    //}
+
+    ////////////////
+    //Función EACH//
+    ////////////////
+
+    //
+    //Ejecuta la función que recibe por parámetro por cada uno de los nodos contenidos en el array
+    //    
+    $("h2[id^=color-").each(function(pos, nodo){
+        //Dentro de esta función 'this' es cada uno de los nodos
+        //console.log(pos, this)
+        //console.log(pos, nodo)
+    })
+
+    //
+    //Tambien nos sirve cuando estamos generando nodos
+    //
+    //$("<p>Vamos</p><p>que</p><p>nos</p><p>vamos</p>").each( function(){
+    //    console.log(this)
+    //})    
+
+    //                   //
+    //Método GRAN FAJADOR//
+    /*                   //
+    $("h2[id^=color-").each(function(){        
+        let nombrecolor = this.innerText
+        switch(nombrecolor){
+            case "Rojo" : 
+                //Cuidado que nos dan el nodo del árbol DOM y no tiene las funciones fashion de JQuery
+                //this.css('color','red') //Esto peta!
+                //Podemos hacerlo directamente con JS
+                //this.style.color = "red"
+                //O podemos hacerlo JQuery style
+                $(this).css('color', 'red')
+                break
+            case "Verde" : 
+                $(this).css('color', 'green')
+                break
+            case "Azul" : 
+                $(this).css('color', 'blue')
+                break
+            case "Amarillo" : 
+                $(this).css('color', 'yellow')
+                break
+            case "Cocido" : 
+                $(this).css('color', '#C0C1D0')
+                break
+            case "Fabada" : 
+                $(this).css('color', '#FABAFA')
+                break
+            default :
+                $(this).css('color', 'black')
+                break
+        }
+    })
+    */
+
+    //                     //
+    //Método FINO ESTILISTA//
+    //                     //
+    let colores = {
+        Rojo     : 'red',
+        Verde    : 'green',
+        Azul     : 'blue',
+        Amarillo : 'yellow',
+        Fabada   : '#FABADA',
+        Cocido   : '#C0C1D0'
+    }    
+
+    $("h2[id^=color-").each(function(){
+        let nombreColor = this.innerText
+        $(this).css('color', colores[nombreColor])
+    })
+
+}
+
+
+</script>
+
+<body>
+
+    <h2 id="titulo" style="color:aquamarine">17 JQuery for each</h2>
+
+    <h2 id="color-1">Rojo</h2>
+    <h2 id="color-2">Verde</h2>
+    <h2 id="color-3">Azul</h2>
+    <h2 id="color-4">Amarillo</h2>
+    <h2 id="color-5">Fabada</h2>
+    <h2 id="color-6">Cocido</h2>
+    <h2 id="color-7">Rojo</h2>
+    <h2 id="color-8">Verde</h2>
+    <h2 id="color-9">Azul</h2>
+    <h2 id="color-10">Amarillo</h2>
+    <h2 id="color-11">Fabada</h2>
+    <h2 id="color-12">Cocido</h2>
+
+    <div id="div"></div>
+
+</body>
+</html>
