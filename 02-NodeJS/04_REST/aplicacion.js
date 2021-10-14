@@ -2,6 +2,7 @@ const http = require("http")
 
 const mongoDBUtil = require("./mongoDBUtil")
 const negocioDiscos = require("./negocioDiscos.js") //La extensión 'js' es opcional
+const servidorWeb = require("./servidorWeb")
 
 //////////////////////////////////////////////////////////////////
 //CONECTAMOS CON LA BASE DE DATOS/////////////////////////////////
@@ -27,6 +28,7 @@ function arrancarServidor(){
 
 /*
 API
+
 Método  Url          Body    Respuesta  Funcionalidad
 ---------------------------------------------------------------
 GET     /discos      -       [{json}]   listar todos los discos
@@ -72,7 +74,7 @@ function procesarPeticion(request, response){
         console.log("Adiós mundo cruel!")
         process.exit(0)  
     } else {
-        devolverError(404, "Petición desconocida", response)
+        servidorWeb.devolverContenidoEstatico(request, response)
     }
     
 }
@@ -83,14 +85,18 @@ function procesarPeticion(request, response){
 
 /*
 Las tareas de la lógica de control en un api REST son las siguientes:
+
 -Extraer de la petición los valores necesarios
     -query parameters
     -parámetros interpolados en la ruta
     -contenido del body
     -valores en los headers
     -cualquier combinación de los anteriores
+
 -Invocar la función con la lógica de negocio
+
 -Componer y entregar la respuesta
+
 -Y YA!
 */
 
@@ -140,6 +146,7 @@ POST /discos
 CT: app/json
 ------------
 { disco }
+
 201 CREATED
 CT: app/json
 ------------
