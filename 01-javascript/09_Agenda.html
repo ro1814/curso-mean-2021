@@ -12,6 +12,7 @@
 let contactos = []
 let idContactoSel = null
 
+
 function insertarContacto(){
 
     //Esto está bien
@@ -20,6 +21,7 @@ function insertarContacto(){
     let direccion = document.getElementById("direccion").value 
     let telefono  = document.getElementById("telefono").value  
     let correoE   = document.getElementById("correoE").value      
+
     let contacto = { 
         id        : Date.now(), //Licencia 
         nombre    : nombre,
@@ -69,6 +71,7 @@ function vaciarFormulario(){
     document.getElementById("direccion").value = ""
     document.getElementById("telefono").value  = ""
     document.getElementById("correoE").value   = ""
+
     //Selectores css
     document.querySelectorAll("#formulario") //Encuentra el nodo cuyo id es 'formulario'
     document.querySelectorAll("input")       //Encuentra los nodos de tipo 'input' (incluye los botones)
@@ -329,3 +332,7 @@ window.onload = inicializar
 </body>
 
 </html>
+
+
+
+
