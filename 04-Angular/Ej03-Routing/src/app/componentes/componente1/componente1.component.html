@@ -1,0 +1,37 @@
+
+<br/>
+
+<h2>Componente 1</h2>
+
+<br/>
+
+<!-- Navegación declarativa desde la vista -->
+Navegando desde la vista: 
+<br/>
+<button class="btn btn-primary" routerLink="/componente2">Componente 2</button>
+<br/>
+<br/>
+
+<!-- 
+Navegación declarativa pasando parámetros 'a fuego' 
+Son parámetros en la ruta, no query params (?) 
+Tiene que estar definida una ruta que expresamente indique que hay parámetros
+-->
+Pasando valores desde la vista:
+<br/>
+<button class="btn btn-primary" routerLink="/componente2/111/222">Componente 2</button>
+<br/>
+<br/>
+
+<!--
+Navegación declarativa pasando parámetros que dependen de una expresión
+-->
+Pasando valores desde la vista [routerLink]:
+<br/>
+<button class="btn btn-primary" [routerLink]="[ '/componente2', valor1, valor2 ]">Componente 2</button>
+<br/>
+<br/>
+
+Navegación programática
+<br/>
+<button class="btn btn-primary" (click)="navegacionProgramatica()">Componente 2</button>
