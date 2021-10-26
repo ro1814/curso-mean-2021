@@ -5,21 +5,26 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { CabeceraComponent } from './componentes/cabecera/cabecera.component';
+import { DiscosComponent } from './componentes/discos/discos.component';
 import { FormularioDiscosComponent } from './componentes/formularioDiscos/formulariodiscos.component';
 import { ListadoDiscosComponent } from './componentes/listadoDiscos/listadodiscos.component';
 import { MenuComponent } from './componentes/menu/menu.component';
 import { PieComponent } from './componentes/pie/pie.component';
+import { ServicioDiscos } from './servicios/servicioDiscos';
 
 let rutas:Routes = [
   {
-    path: "discos/listado",
-    component: ListadoDiscosComponent
+    path : "",
+    component : ListadoDiscosComponent
   },
   {
-    path: "discos/formulario",
-    component: FormularioDiscosComponent
-  }
-  
+    path : "discos/listado",
+    component : ListadoDiscosComponent
+  },
+  {
+    path : "discos/formulario",
+    component : FormularioDiscosComponent
+  }, 
 ]
 
 @NgModule({
@@ -27,17 +32,17 @@ let rutas:Routes = [
     AppComponent,
     PieComponent,
     MenuComponent,
+    DiscosComponent,
     CabeceraComponent,
     ListadoDiscosComponent,
     FormularioDiscosComponent
   ],
   imports: [
-    BrowserModule, //Esta siempre en una app Web
-    FormsModule, //Para el Bidirectional binding
-    RouterModule.forRoot(rutas) //Para los router-outlets
-
+    BrowserModule, //Este está siempre en una aplicación web
+    FormsModule,   //Para el bidirectional binding
+    RouterModule.forRoot(rutas)   //Para los router-outlets
   ],
-  providers: [],
+  //providers: [ ServicioDiscos ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
