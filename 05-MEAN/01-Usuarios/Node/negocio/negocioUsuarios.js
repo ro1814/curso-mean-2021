@@ -9,6 +9,10 @@ let reglasUsrInsercion = {
     correoE  : "required|min:3|max:30|email"
 }
 
+exports.buscarPorLoginYPw = function(login, pw){
+
+}
+
 //No hace falta estar autenticado para llamar aqui
 exports.altaUsuario = function(usuario){
 
@@ -52,6 +56,7 @@ exports.altaUsuario = function(usuario){
 exports.modificarUsuario = function(){
     
 }
+
 //
 exports.bajaUsuario = function(idUsuario){
     
@@ -81,7 +86,7 @@ exports.bajaUsuario = function(idUsuario){
                 resolve()
             })
             .catch(error => {
-                console.log(err)
+                console.log(error)
                 reject({ codigo:500, mensaje:"Error con la base de datos!!!" })
             })
 
