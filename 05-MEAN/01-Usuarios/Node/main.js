@@ -33,28 +33,51 @@ function arrancarServidor(){
 
     let app = express()
 
-    //middleware
+    //Interceptores (en express los llaman middleware)
     app.use(express.json({
         limit: '5mb' //Tamaño máximo del body que estamos dispuestos a leer. IMPRESCINDIBLE
     }))       
 
-    //Interceptores (en express los llaman middleware)
     app.use(interceptorLog)
-    //app.use(interceptorCORS)
+    app.use(interceptorCORS)
     app.use(interceptorJWT)
 
     //Routers
     app.use(autenticacionRouter)
     app.use(usuariosRouter)
 
+    //Arrancamos el puerto
     http.createServer(app).listen(process.env.app_puerto, function(){
         console.log("Esperando peticiones en el puerto "+process.env.app_puerto)
     })
-
+    
 }
+
+////////////////////////////////////////////////////////////////////
+//MIDDLEWARE. Funciones interceptoras///////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 function interceptorLog(request, response, next){
     console.log("==============================================")
     console.log("Peticion recibida: "+request.method+" "+request.url)
+    next()
+}
+
+function interceptorCORS(request, response, next){
+    console.log("----------------------------------------------")
+    console.log("Interceptor CORS")
+    //Cross Origin Resource Sharing
+    //Vamos a añadir estos headers a todas las respuestas que demos, sean options o no:
+    response.setHeader("Access-Control-Allow-Origin", "*")
+    response.setHeader('Access-Control-Allow-Methods', 
+                    'GET,PUT,POST,DELETE,PATCH,OPTIONS')
+    response.setHeader("Access-Control-Allow-Headers", 
+                    "Origin, X-Requested-With, Content-Type, Accept, Authorization")  
+    
+    if(request.method.toUpperCase()=="OPTIONS"){
+        response.end()
+        return
+    } 
+
     next()
 }

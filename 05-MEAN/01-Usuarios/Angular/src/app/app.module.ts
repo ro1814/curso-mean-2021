@@ -11,6 +11,9 @@ import { MaquetacionLoginComponent } from './componentes/maquetacion/maquetacion
 import { LoginComponent } from './componentes/usuarios/login/login.component';
 import { RegistroComponent } from './componentes/usuarios/registro/registro.component';
 import { AceptacionTerminosComponent } from './componentes/usuarios/aceptacion-terminos/aceptacion-terminos.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@Angular/common/http';
+import { PerfilComponent } from './componentes/usuarios/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,7 @@ import { AceptacionTerminosComponent } from './componentes/usuarios/aceptacion-t
     PieComponent,
     MenuComponent,
     LoginComponent,
+    PerfilComponent,
     CabeceraComponent,
     RegistroComponent,
     MaquetacionLoginComponent,
@@ -25,7 +29,10 @@ import { AceptacionTerminosComponent } from './componentes/usuarios/aceptacion-t
     AceptacionTerminosComponent
   ],
   imports: [
+    FormsModule, 
     BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(AppModule.rutas)
   ],
   providers: [],
@@ -33,8 +40,37 @@ import { AceptacionTerminosComponent } from './componentes/usuarios/aceptacion-t
 })
 export class AppModule { 
 
+  //Aqui están las rutas para el router-outlet que está en lo alto de la jerarquía
   static rutas:Routes = [
-
+    {
+      path      : "",
+      component : MaquetacionLoginComponent,
+      children : [
+        {
+          path      : "",
+          component : LoginComponent
+        },
+        {
+          path      : "registro",
+          component : RegistroComponent
+        },
+        {
+          path      : "aceptacion",
+          component : AceptacionTerminosComponent
+        }
+      ]
+      
+    },
+    {
+      path      : "tienda",
+      component : MaquetacionTiendaComponent,
+      children  : [
+        {
+          path      : "perfil",
+          component : PerfilComponent
+        }        
+      ]      
+    }
   ]
 
 }
