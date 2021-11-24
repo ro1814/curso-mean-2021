@@ -1,5 +1,5 @@
 const express = require("express")
-const negocioUsuarios = require("../negocio/negocioUsuarios")
+const negocioUsuarios = require("../modelo/negocio/negocioUsuarios")
 
 let router = express.Router()
 
@@ -94,12 +94,12 @@ function modificarUsuario(request, response){
 function bajaUsuario(request, response){
 
     let id = request.params.id
-
     let autoridad = request.autoridad
+
     negocioUsuarios
         .bajaUsuario(id, autoridad)
         .then(() => {
-            response.json({ mensaje:"El usuaario se ha dado de baja" })
+            response.json({ mensaje:"El usuario se ha dado de baja" })
         })
         .catch(error => {
             response.statusCode = error.codigo
