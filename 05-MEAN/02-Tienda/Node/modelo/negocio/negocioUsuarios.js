@@ -1,7 +1,7 @@
 //npm install validatorjs
-const Validator = require("validatorjs")
-const Usuario = require("../bbdd/esquemaUsuario").Usuario
-const UsuarioHistorico = require("../bbdd/esquemaUsuarioHistorico").UsuarioHistorico
+const validacionUtil = require("../../util/validacionUtil")
+const Usuario = require("../entidades/esquemaUsuario").Usuario
+const UsuarioHistorico = require("../entidades/esquemaUsuarioHistorico").UsuarioHistorico
 
 let reglasUsrInsercion = {
     login    : "required|min:3|max:20",
@@ -43,15 +43,7 @@ exports.altaUsuario = function(usuario){
 
     return new Promise(function(resolve, reject){
         
-        Validator.useLang('es')
-        let validador = new Validator(usuario, reglasUsrInsercion)
-        if(validador.fails()){
-            console.log(validador.errors.errors)
-            reject( { codigo:400, 
-                      mensaje:'Los datos del cliente son incorrectos', 
-                      errores: validador.errors.errors } ) //Mal
-            return
-        }
+        validacionUtil.validar(usuario, reglasUsrInsercion, reject)
 
         //Le asigmanos el rol 'CLIENTE'
         usuario.rol = "CLIENTE"
@@ -88,15 +80,7 @@ exports.modificarUsuario = function(usuario, autoridad){
     return new Promise(function(resolve, reject){
 
         //Validación
-        Validator.useLang('es')
-        let validador = new Validator(usuario, reglasUsrModificacion)
-        if(validador.fails()){
-            console.log(validador.errors.errors)
-            reject( { codigo:400, 
-                      mensaje:'Los datos del cliente son incorrectos', 
-                      errores: validador.errors.errors } ) //Mal
-            return
-        }        
+        validacionUtil.validar(usuario, reglasUsrModificacion, reject)
                     
         //Autorización 
         if(autoridad.rol=="CLIENTE" && autoridad._id!=usuario._id){                        
@@ -133,6 +117,7 @@ exports.bajaUsuario = function(idUsuario, autoridad){
 
         console.log("Autoridad:", autoridad, "idUsuario:", idUsuario)
 
+        //Autorización
         if(autoridad.rol=="CLIENTE" && autoridad._id != idUsuario){
             reject({ codigo:403, mensaje:"Un cliente solo puede darse de baja a si mismo"})
             return
@@ -152,14 +137,9 @@ exports.bajaUsuario = function(idUsuario, autoridad){
             })
             .then(resultadoDelete => {
                 console.log("DELETE:", resultadoDelete)
-                
-                
-                
-                console.log("===================================",usuarioEncontrado)
-                //delete usuarioEncontrado._id
-                console.log("===================================",usuarioEncontrado)
-
+                /*Grán fajador
                 let datos = {
+                    _id       : usuarioEncontrado._id,
                     login     : usuarioEncontrado.login,
                     password  : usuarioEncontrado.password,
                     rol       : usuarioEncontrado.rol,
@@ -168,15 +148,15 @@ exports.bajaUsuario = function(idUsuario, autoridad){
                     telefono  : usuarioEncontrado.telefono,
                     correoE   : usuarioEncontrado.correoE,
                     idioma    : usuarioEncontrado.idioma                    
-                }             
+                }  
+                let usuarioHistorico = new UsuarioHistorico(datos)
+                */                           
                 
-                //let usuarioHistorico = new UsuarioHistorico(datos)
-
-                return UsuarioHistorico.create(usuarioEncontrado)
-
-                //return usuarioHistorico.save()
-
-
+                //Fino estilista
+                //Datos ya no es un objeto mongoose, ya no tiene las funciones, solo tiene las propiedades que guardan los datos
+                let datos = usuarioEncontrado.toObject()
+                let usuarioHistorico = new UsuarioHistorico(datos)
+                return usuarioHistorico.save()
             })
             .then( resultadoInsertOne => {                
                 console.log("INSERT:", resultadoInsertOne)
