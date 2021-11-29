@@ -45,8 +45,20 @@ export class Pedido {
           }
         }
 
-        this.calcularTotal
+        this.calcularTotal()
     } 
+
+    public borrarDetalle(producto:Producto):void{
+      for(let a=0; a<this.detalles.length; a++){
+        let detalleAux = this.detalles[a]
+        if(detalleAux.producto?._id == producto._id){
+          this.detalles.splice(a,1)
+          break
+        }
+      }
+
+      this.calcularTotal()
+    }
         
     private calcularTotal():void{
         let detalle:any

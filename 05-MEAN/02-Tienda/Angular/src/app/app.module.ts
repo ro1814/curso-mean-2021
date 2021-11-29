@@ -17,19 +17,25 @@ import { PerfilComponent } from './componentes/usuarios/perfil/perfil.component'
 import { CatalogoComponent } from './componentes/tienda/catalogo/catalogo.component';
 import { ProductoComponent } from './componentes/tienda/producto/producto.component';
 import { ResumenCestaComponent } from './componentes/tienda/resumen-cesta/resumen-cesta.component';
+import { CestaComponent } from './componentes/tienda/cesta/cesta.component';
+import { DetalleCestaComponent } from './componentes/tienda/detalle-cesta/detalle-cesta.component';
+import { BarraIzquierdaComponent } from './componentes/tienda/barra-izquierda/barra-izquierda.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PieComponent,
     MenuComponent,
+    CestaComponent,
     LoginComponent,
     PerfilComponent,
     ProductoComponent,
     CatalogoComponent,
     CabeceraComponent,
     RegistroComponent,
+    DetalleCestaComponent,
     ResumenCestaComponent,
+    BarraIzquierdaComponent,
     MaquetacionLoginComponent,
     MaquetacionTiendaComponent,
     AceptacionTerminosComponent,
@@ -69,6 +75,7 @@ export class AppModule {
     {
       path      : "tienda",
       component : MaquetacionTiendaComponent,
+      //Rutas para el router-outlet primario
       children  : [
         {
           path      : "perfil",
@@ -77,7 +84,26 @@ export class AppModule {
         {
           path      : "catalogo",
           component : CatalogoComponent
-        }        
+        },      
+        {
+          path      : "cesta",
+          component : CestaComponent
+        },
+        //  
+        //Rutas para los named router outlets
+        //
+        {
+          outlet    : 'izq',
+          path      : 'barraIzq',
+          component : BarraIzquierdaComponent
+          //pueden tener 'children' 
+        },
+        {
+          outlet    : 'der',
+          path      : 'resumenCesta',
+          component : ResumenCestaComponent
+          //pueden tener 'children' 
+        },                
       ]      
     }
   ]

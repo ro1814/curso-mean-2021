@@ -26,11 +26,10 @@ export class LoginComponent implements OnInit {
   }
 
   public entrar():void{
-    console.log(this.login+":"+this.password)
     this.autenticacionService.login(this.login, this.password)
       .subscribe(
         () => {
-          this.router.navigateByUrl("/tienda/perfil")
+          this.router.navigateByUrl("/tienda")
         },
         error => {
           this.mensaje = "Credenciales incorrectas"
