@@ -1,8 +1,12 @@
+import { BehaviorSubject } from "rxjs";
+import { CestaService } from "../servicios/cesta-service";
 import { DetallePedido } from "./detallePedido";
 import { Producto } from "./producto";
 import { Usuario } from "./usuario";
 
 export class Pedido {
+
+  private subject:BehaviorSubject<Pedido>|null = null
 
     public constructor(
         public _id      : string|null  = null,
@@ -14,6 +18,13 @@ export class Pedido {
         public detalles : DetallePedido[] = [],
         public total    : number|null  = null
     ){}
+
+    public getSubject(){
+      if(!this.subject){
+        this.subject = new BehaviorSubject(new Pedido())
+      }
+      return this.subject
+    }
 
     public addProducto(producto:Producto):void{
         let detalle:any = null
@@ -30,7 +41,8 @@ export class Pedido {
           this.detalles?.push(detalle)
         }
     
-        this.calcularTotal()      
+        this.calcularTotal()   
+        this.subject?.next(this) 
     } 
     
     public quitarProducto(producto:Producto):void{
@@ -46,6 +58,7 @@ export class Pedido {
         }
 
         this.calcularTotal()
+        this.subject?.next(this)
     } 
 
     public borrarDetalle(producto:Producto):void{
@@ -58,8 +71,22 @@ export class Pedido {
       }
 
       this.calcularTotal()
+      this.subject?.next(this)
     }
         
+    public vaciar():void{
+      console.log("Me vacío")
+      this._id       = null,
+      this.codigo    = null,
+      this.fecha     = null,
+      this.estado    = null,
+      this.direccion = null,
+      this.usuario   = null,
+      this.detalles  = [],
+      this.total     = null
+      this.subject?.next(this) 
+    }
+
     private calcularTotal():void{
         let detalle:any
         let total:number = 0
