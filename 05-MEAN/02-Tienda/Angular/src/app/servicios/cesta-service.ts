@@ -1,15 +1,18 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { Pedido } from "../entidades/pedido";
 import { Usuario } from "../entidades/usuario";
 import { AutenticacionService } from "./autenticacion-service";
 
-@Injectable({ providedIn : 'root' })
-export class CestaService {
+@Injectable(/*{ providedIn : 'root' }*/)
+export class CestaService implements OnDestroy {
 
+    private subscription:any
     private cesta:Pedido
     private usuario:Usuario
 
     public constructor(autenticacionService:AutenticacionService){
+
+        console.log("Creando CestaService")
 
         //Obtenemos el usuario que está autenticado
         this.usuario = autenticacionService.getUsuario()
@@ -27,7 +30,8 @@ export class CestaService {
             localStorage.setItem("cesta_"+this.usuario._id,JSON.stringify(cesta))
         }
 
-        cesta
+        //Aqui cestaService se subscribe a los cambios en la cesta
+        this.subscription = cesta
             .getSubject()
             .subscribe(
                 (evento: Pedido) => {
@@ -37,10 +41,14 @@ export class CestaService {
                 }
             )
         
-        //Aqui cestaService se subscribe a los cambios en la cesta
-        
         //cesta.setCestaService(this)
         this.cesta = cesta
+    }
+
+    public ngOnDestroy(){
+        console.log("ADIOS MUNDO CRUEL")
+        //Cancelamos la subscripción que tenemos con la cesta
+        this.subscription.unsubscribe()
     }
 
     public getCesta():Pedido{
@@ -58,7 +66,8 @@ export class CestaService {
         this.cesta = new Pedido()
         this.guardarCesta(this.cesta)
 
-        this.cesta
+        this.subscription.unsubscribe()
+        this.subscription = this.cesta
             .getSubject()
             .subscribe(
                 (evento: Pedido) => {

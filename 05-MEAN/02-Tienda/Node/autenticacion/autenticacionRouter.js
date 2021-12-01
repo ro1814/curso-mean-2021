@@ -49,9 +49,8 @@ function autenticarUsuario(request, response){
             //delete usuario.password 
             let respuesta = {
                 jwt : token,
-                usuario : usuario
+                usuario : usuario //El usuario va sin el password
             }
-            //cosita extra para no acabar en los juzgados            
             response.json(respuesta)
         })
         .catch(err => {
@@ -61,6 +60,5 @@ function autenticarUsuario(request, response){
         })
 
 }
-
 
 

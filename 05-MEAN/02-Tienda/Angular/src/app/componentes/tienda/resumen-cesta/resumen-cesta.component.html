@@ -1,13 +1,16 @@
+<h5 class="text-center mt-5¡4">Resumen cesta</h5>
 
-<h5 class="text-center mt-4">Resumen cesta</h5>
+{{cesta.direccion}}<br/>
+{{cesta.fecha}}<br/>
+{{cesta.formaPago}}
 
 <div *ngFor="let dp of cesta.detalles">
 
-    {{dp.producto?.nombre}}
+    {{dp.producto?.nombre}} : {{dp.precio}} € 
 
     <br/>
 
-    {{dp.precio}} €
+    {{dp.precio * dp.cantidad}} €
     <button class="btn btn-sm btn-warning ml-1 mr-1" (click)="disminuirCantidad(dp)">-</button>
     <span>{{dp.cantidad}} </span>
     <button class="btn btn-sm btn-success ml-1 mr-1" (click)="aumentarCantidad(dp)">+</button>
@@ -19,6 +22,58 @@
     </button> 
     
     <hr/>
+</div>
+
+<h4 *ngIf="cesta.detalles.length>0">
+    Total: {{cesta?.total}} €
+</h4>
+
+<div *ngIf="cesta.detalles.length==0" class="text-center">
+    La cesta está vacía
+</div>
+
+
+
+
+<!--
+<h5 class="text-center mt-4">Resumen cesta</h5>
+
+<div *ngFor="let dp of cesta.detalles">
+
+    <div class="row">
+    
+        <div class="col-12">
+            {{dp.producto?.nombre}}
+        </div>
+
+        <div class="col-4">
+            {{dp.precio}} €
+        </div>
+        
+        <div class="col-1">
+            <button class="btn btn-sm btn-warning ml-1 mr-1" (click)="disminuirCantidad(dp)">-</button>
+        </div>
+        
+        <div class="col-1 text-center">
+            {{dp.cantidad}}
+        </div>
+        
+        <div class="col-1">
+            <button class="btn btn-sm btn-success ml-1 mr-1" (click)="aumentarCantidad(dp)">+</button>
+        </div>
+            
+        <div class="col-1">
+            <button class="btn btn-sm  btn-danger ml-1 mr-1" (click)="borrarDetalle(dp)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg>            
+            </button> 
+        </div>
+        
+        <hr/>
+
+    </div>
 
 </div>
 
@@ -26,6 +81,7 @@
     Cesta vacía
 </div>
 
+-->
 
 
 

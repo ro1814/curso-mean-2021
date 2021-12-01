@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CestaService } from 'src/app/servicios/cesta-service';
 
 @Component({
   selector: 'app-maquetacion-tienda',
-  templateUrl: './maquetacion-tienda.component.html'
+  templateUrl: './maquetacion-tienda.component.html',
+  providers: [ CestaService ]
 })
 export class MaquetacionTiendaComponent implements OnInit {
 
