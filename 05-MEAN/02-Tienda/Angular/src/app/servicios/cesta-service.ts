@@ -18,36 +18,28 @@ export class CestaService implements OnDestroy {
         this.usuario = autenticacionService.getUsuario()
 
         let json:string|null = localStorage.getItem("cesta_"+this.usuario._id)
-        let cesta:any 
+        let cesta:Pedido = new Pedido()
         if(json){
-            cesta = JSON.parse(json)
-            //cesta no tiene el prototipo de la clase Pedido y no cuenta con las funciones
-            //Le asignamos el prototipo de Pedido
-            Object.setPrototypeOf(cesta, Pedido.prototype)
+            let detallesCesta = JSON.parse(json)
+            cesta.detalles = detallesCesta.detalles
+            cesta.total = detallesCesta.total
         } else {
-            cesta = new Pedido()
-            console.log(JSON.stringify(cesta))
-            localStorage.setItem("cesta_"+this.usuario._id,JSON.stringify(cesta))
+            console.log("==================================")
+            console.log("Creando cesta en LocalStorage")
+            this.guardarCesta(cesta)
         }
-
-        //Aqui cestaService se subscribe a los cambios en la cesta
-        this.subscription = cesta
-            .getSubject()
-            .subscribe(
-                (evento: Pedido) => {
-                    console.log("CestaService: Cambio en la cesta!")
-                    console.log(evento)
-                    this.guardarCesta(evento)
-                }
-            )
         
-        //cesta.setCestaService(this)
         this.cesta = cesta
+        
+        //Aqui cestaService se subscribe a los cambios en la cesta
+        this.subscribirseALosCambiosEnLaCesta()
     }
 
     public ngOnDestroy(){
         console.log("ADIOS MUNDO CRUEL")
         //Cancelamos la subscripción que tenemos con la cesta
+        console.log("==================================")
+        console.log("Cancelando subscripción a la cesta")        
         this.subscription.unsubscribe()
     }
 
@@ -56,26 +48,37 @@ export class CestaService implements OnDestroy {
     }
 
     public guardarCesta(cesta:any):void{
-        let x:any = cesta.subject
-        cesta.subject = null
-        localStorage.setItem("cesta_"+this.usuario._id, JSON.stringify(cesta))
-        cesta.subject = x
+        let detallesCesta = {
+            detalles : cesta.detalles,
+            total    : cesta.total
+        }
+        localStorage.setItem("cesta_"+this.usuario._id, JSON.stringify(detallesCesta))
     }
 
     public crearCesta():void{
-        this.cesta = new Pedido()
-        this.guardarCesta(this.cesta)
-
+        //Cancelamos la subscripción a la cesta antígua
         this.subscription.unsubscribe()
+        //Creamos la nueva cesta
+        this.cesta = new Pedido()
+        //Guardamos la cesta
+        this.guardarCesta(this.cesta)
+        console.log("==================================")
+        console.log("Cancelando subscripción a la cesta")
+        //Nos subscribimos a la nueva cesta
+        this.subscribirseALosCambiosEnLaCesta()      
+    }
+
+    private subscribirseALosCambiosEnLaCesta():void{
         this.subscription = this.cesta
             .getSubject()
             .subscribe(
                 (evento: Pedido) => {
+                    console.log("==================================")
                     console.log("CestaService: Cambio en la cesta!")
                     console.log(evento)
                     this.guardarCesta(evento)
                 }
-            )        
+            )          
     }
 
 }
