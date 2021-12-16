@@ -1,5 +1,3 @@
-
-
 mongorestore -d bbdd -c tweets tweets.bson
 
 //         //
@@ -134,8 +132,3 @@ db.testcol.find( { "title" : 3 }, { "_id" : 0, "budget" : 0 } ).explain("executi
 
 // Covered query! 
 db.testcol.find( { "title" : 3 }, { "_id" : 0, "title" : 1, "name" : 1, "rating" : 1 } ).explain("executionStats")
-
-
-
-
-

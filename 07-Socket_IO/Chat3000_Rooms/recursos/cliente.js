@@ -1,6 +1,35 @@
 //Con esta variable referenciaremos al socket
 let socket = null
 
+function obtenerSalas(){
+    $.ajax({
+        url : "/salas"
+    })
+    .done(rellenarSalas)
+    .fail( err => console.log(err))
+}
+
+function rellenarSalas(salas){
+    console.log(salas)
+    for(let sala of salas){
+        let radio = $(`<input id="${sala}" type='radio' name='sala' value='${sala}'>`).click(seleccionarSala) 
+        let div = $("<div></div>")
+        div.append(radio)
+        div.append(" "+sala)
+        $("#salas").append(div)   
+    }
+    $(`[name=sala][value=General]`).prop("checked",true)
+}
+
+function seleccionarSala(){
+    //let sala = document.querySelector(("[name=sala]:checked")).value
+    let sala = $("[name=sala]:checked").val()
+    console.log(sala)
+
+    socket.emit("cambiarSala", sala)
+
+}
+
 function conectar(){
 
     let alias = $("#alias").val()
@@ -37,6 +66,7 @@ function conexionEstablecida(){
     //-valor del mensaje (string)
     let alias = $("#alias").val()
     socket.emit("alias", alias)
+    obtenerSalas()
 }
 
 function desconectar(){
@@ -86,6 +116,7 @@ function modoDesconectado(){
 
     $("#mensajes").html("")
     $("#usuarios").html("")
+    $("#salas").html("")
 }
 
 function modoConectado(){
